@@ -14,7 +14,28 @@ public class LeapYear {
         }
     }
 
-    /** Must be provided an integer as a command line argument ARGS. */
+    /** Judge if the specified year is a leap year.
+     *
+     *  @param year a year represented by an integer
+     *  @return true if {@code year} representing a leap year, false otherwise
+     *  @see <a href='https://sp18.datastructur.es/materials/lab/lab1/lab1#f-leap-year'>Leap Year</a>
+     */
+    public static boolean isLeapYear(int year) {
+        if (year <= 0) {
+            return false;
+        } else if (year % 4 != 0) {
+            return false;
+        } else if ((year % 100) == 0 && (year % 400) != 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /** Must be provided an integer as a command line argument ARGS.
+     *  
+     *  @param args command line arguments
+     */
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Please enter command line arguments.");
