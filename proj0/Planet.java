@@ -7,6 +7,7 @@ public class Planet {
     public String imgFileName;
 
     public static final double G = 6.67e-11;
+    public static final String IMAGE_DIRECTORY = "images/";
 
     /**
      *  Initializes a planet with the given position, velocity, mass and the
@@ -163,5 +164,12 @@ public class Planet {
         double dpY = this.yyVel * dt;
         this.xxPos += dpX;
         this.yyPos += dpY;
+    }
+
+    /**
+     *  Draw itself on the canvas of {@code StdDraw}.
+     */
+    public void draw() {
+        StdDraw.picture(this.xxPos, this.yyPos, IMAGE_DIRECTORY + this.imgFileName);
     }
 }
