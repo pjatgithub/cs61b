@@ -1,7 +1,7 @@
 import java.util.Iterator;
 
 /**
- * {@code LinkedListDequeue} is an implementation of double-ended queues.
+ * <code>LinkedListDequeue</code> is an implementation of double-ended queues.
  *
  * @author Hongbin Jin
  * @param <T> type of the elements to be hold
