@@ -53,7 +53,7 @@ public class ArrayDeque<T> {
      * @return true if empty, otherwise false.
      */
     public boolean isEmpty() {
-        return size == 0;.
+        return size == 0;
     }
 
     /**
