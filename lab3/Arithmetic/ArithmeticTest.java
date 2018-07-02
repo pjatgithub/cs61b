@@ -28,6 +28,19 @@ public class ArithmeticTest {
         assertEquals(0, Arithmetic.sum(6, -6));
     }
 
+    /**
+     * Performs a few tests about <code>reverse</code> method.
+     */
+    @Test(timeout = 1000)
+    public void testReverse() {
+        IntList list = IntList.of(1,2,3,4,5);
+        IntList reversed = IntList.reverse(list);
+
+        assertEquals(reversed, IntList.of(5,4,3,2,1));
+        assertNotEquals(list, IntList.of(1,2,3,4,5));
+        IntList.reverse(null);
+    }
+
     /* Run the unit tests in this file. */
     public static void main(String... args) {        
         jh61b.junit.TestRunner.runTests("all", ArithmeticTest.class);
