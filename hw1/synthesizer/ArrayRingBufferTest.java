@@ -2,6 +2,9 @@ package synthesizer;
 
 import org.junit.Test;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -138,5 +141,25 @@ public class ArrayRingBufferTest {
             assertEquals(i, (int) buffer.peek());
             buffer.dequeue();
         }
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testIterator() {
+        int capacity = 10;
+        ArrayRingBuffer<Integer> buffer = new ArrayRingBuffer<>(capacity);
+
+        for (int i = 0; i < capacity; i++) {
+            buffer.enqueue(i);
+        }
+
+        Iterator<Integer> iterator = buffer.iterator();
+
+        for (int i = 0; i < capacity; i++) {
+            assertTrue(iterator.hasNext());
+            assertEquals(i, (int) iterator.next());
+        }
+
+        assertFalse(iterator.hasNext());
+        iterator.next();
     }
 }

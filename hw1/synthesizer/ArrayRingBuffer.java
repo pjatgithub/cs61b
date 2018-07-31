@@ -1,6 +1,7 @@
 package synthesizer;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     /* Index for the next dequeue or peek. */
@@ -95,4 +96,64 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     }
 
     // TODO: When you get to part 5, implement the needed code to support iteration.
+
+    /**
+     * Creates an instance of {@link Iterator Iterator} to pass through all
+     * elements in the queue.
+     *
+     * @return an instance of {@link Iterator Iterator}.
+     */
+    @Override
+    public Iterator<T> iterator() {
+        return new ArrayRingBufferIterator();
+    }
+
+    /**
+     * {@code ArrayRingBufferIterator} implements {@link Iterator Iterator} and
+     * is usded to pass through all elements in the corresponding instance of
+     * {@link ArrayRingBuffer ArrayRingBuffer}.
+     */
+    private class ArrayRingBufferIterator implements Iterator<T> {
+        private int ct;
+        private int index;
+
+        /**
+         * Creates an instance of {@link ArrayRingBufferIterator ArrayRingBufferIterator}.
+         */
+        ArrayRingBufferIterator() {
+            ct = 0;
+            index = first;
+        }
+
+        /**
+         * Returns {@code true} if the iteration has more elements.
+         * (In other words, returns {@code true} if {@link #next} would
+         * return an element rather than throwing an exception.)
+         *
+         * @return {@code true} if the iteration has more elements
+         */
+        @Override
+        public boolean hasNext() {
+            return ct < fillCount();
+        }
+
+        /**
+         * Returns the next element in the iteration.
+         *
+         * @return the next element in the iteration
+         * @throws NoSuchElementException if the iteration has no more elements
+         */
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            T item = rb[index];
+            ct++;
+            index = index(index + 1);
+
+            return item;
+        }
+    }
 }

@@ -5,7 +5,7 @@ package synthesizer;
  *
  * @param <T> type of elements put into the queue.
  */
-public interface BoundedQueue<T> {
+public interface BoundedQueue<T> extends Iterable<T> {
     /**
      * Returns maximum number of elements can be put.
      *
