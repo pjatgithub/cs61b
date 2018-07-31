@@ -59,7 +59,7 @@ public class ArrayRingBufferTest {
     }
 
     @Test
-    public void TestFillCount() {
+    public void testFillCount() {
         int capacity = 10;
         ArrayRingBuffer<Integer> buffer = new ArrayRingBuffer<>(capacity);
 
