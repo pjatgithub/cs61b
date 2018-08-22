@@ -97,6 +97,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     @Override
     public void put(K key, V value) {
         checkKey(key);
+        checkValue(value);
 
         root = putHelper(key, value, root);
         size++;
@@ -284,6 +285,18 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     private void checkKey(K key) {
         if (key == null) {
             throw new IllegalArgumentException("key cannot be null");
+        }
+    }
+
+    /**
+     * Checks whether {@code value} is {@code null}.
+     * @param value value to be checked.
+     *
+     * @throws IllegalArgumentException if {@code value} is {@code null}.
+     */
+    private void checkValue(V value) {
+        if (value == null) {
+            throw new IllegalStateException("value cannot be null");
         }
     }
 }

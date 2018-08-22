@@ -2,8 +2,12 @@ package lab9tester;
 
 import static org.junit.Assert.*;
 
+import lab9.BSTMap;
+import lab9.Map61B;
 import org.junit.Test;
 import lab9.MyHashMap;
+
+import java.util.*;
 
 /**
  * Tests by Brendan Hu, Spring 2015, revised for 2018 by Josh Hug
@@ -125,6 +129,100 @@ public class TestMyHashMap {
         studentIDs.put("evil alan", 345);
         assertEquals(345, studentIDs.get("evil alan").intValue());
         assertEquals(studentIDs.get("evil alan"), studentIDs.get("alan"));
+    }
+
+    /**
+     * Tests {@link MyHashMap#keySet() MyHashMap.keySet()}.
+     */
+    @Test
+    public void testKeySet() {
+        Set<String> keys = Set.of("723", "238", "1", "99", "2345", "9862");
+        Map61B<String, Integer> map = new MyHashMap<>();
+
+        for (String key : keys) {
+            map.put(key, Integer.valueOf(key));
+        }
+
+        assertEquals(keys, map.keySet());
+    }
+
+    /**
+     * Tests {@link MyHashMap#remove(Object)} MyHashMap.remove(K key)}.
+     */
+    @Test
+    public void testRemove() {
+        Set<String> keys = Set.of("723", "238", "1", "99", "2345", "9862");
+        Set<String> removedKeys = Set.of("238", "1", "99");
+        Set<String> leftKeys = Set.of("723", "2345", "9862");
+        Map61B<String, Integer> map = new MyHashMap<>();
+
+        for (String key : keys) {
+            map.put(key, Integer.valueOf(key));
+        }
+        assertEquals(keys, map.keySet());
+
+        for (String removedKey : removedKeys) {
+            assertEquals(Integer.valueOf(removedKey), map.remove(removedKey));
+        }
+        assertEquals(leftKeys, map.keySet());
+
+        for (String leftKey : leftKeys) {
+            assertEquals(Integer.valueOf(leftKey), map.remove(leftKey));
+        }
+        assertEquals(0, map.size());
+    }
+
+    /**
+     * Tests {@link MyHashMap#remove(Object, Object) MyHashMap#remove(K key, V value)}.
+     */
+    @Test
+    public void testRemoveWithValue() {
+        Set<String> original = Set.of("1", "2", "11", "123", "345", "777");
+        Set<String> removed = Set.of("1", "2", "11");
+        Set<String> left = Set.of("123", "345", "777");
+        Map61B<String, Integer> map = new MyHashMap<>();
+
+        for (String num : original) {
+            map.put(num, Integer.valueOf(num));
+        }
+        assertEquals(original, map.keySet());
+
+        for (String num : removed) {
+            int n = Integer.parseInt(num);
+            assertEquals(n, (int) map.remove(num, n));
+        }
+        assertEquals(left, map.keySet());
+
+        for (String num : left) {
+            int n = Integer.parseInt(num) + 1;
+            assertNull(map.remove(num, n));
+        }
+        assertEquals(left, map.keySet());
+
+        for (String num : left) {
+            int n = Integer.parseInt(num);
+            assertEquals(n, (int) map.remove(num, n));
+        }
+        assertEquals(0, map.size());
+    }
+
+    /**
+     * Tests {@link MyHashMap#iterator() MyHashMap.iterator()}.
+     */
+    @Test
+    public void testIterator() {
+        Set<String> expected = Set.of("1", "2", "11", "123", "345", "777");
+        Set<String> actual = new HashSet<>(expected.size());
+        Map61B<String, Integer> map = new MyHashMap<>();
+
+        for (String s : expected) {
+            map.put(s, Integer.valueOf(s));
+        }
+
+        for (String s : map) {
+            actual.add(s);
+        }
+        assertEquals(expected, actual);
     }
 
     public static void main(String[] args) {
