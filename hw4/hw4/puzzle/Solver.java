@@ -8,21 +8,51 @@ import java.util.Map;
 
 /**
  * {@code Solver} is used current solve puzzle problems.
+ *
+ * @author Hongbin Jin
  */
 public class Solver {
+    /**
+     * A map records edges.
+     */
     private Map<WorldState, WorldState> from;
+
+    /**
+     * A map stores minimum moves from the initial state to a state.
+     */
     private Map<WorldState, Integer> total;
+
+    /**
+     * A priority queue holds all states to be examined.
+     */
     private MinPQ<SearchNode> pq;
+
+    /**
+     * A flag indicates whether this puzzle has been solved.
+     */
     private boolean solved = false;
+
+    /**
+     * A sequence of moves from the initial state to the goal state.
+     */
     private Iterable<WorldState> moves;
+
+    /**
+     * Number of moves from the initial state to the goal state.
+     */
     private int numMoves;
+
+    /**
+     * Initial state.
+     */
     private WorldState initial;
+
     /**
      * Creates an solver.
-     * @param initial initial state of a puzzle
+     * @param init init state of a puzzle
      */
-    public Solver(WorldState initial) {
-        this.initial = initial;
+    public Solver(WorldState init) {
+        this.initial = init;
     }
 
     /**
@@ -59,9 +89,10 @@ public class Solver {
      */
     private void relax(SearchNode node) {
         for (WorldState neighbor : node.current.neighbors()) {
-            int newTotal;
+            int newTotal = node.total + 1;
             if (!neighbor.equals(node.previous)
-                    && total.getOrDefault(neighbor, Integer.MAX_VALUE) > (newTotal = node.total + 1)) {
+                    && total.getOrDefault(neighbor, Integer.MAX_VALUE)
+                        > newTotal) {
                 from.put(neighbor, node.current);
                 total.put(neighbor, newTotal);
                 pq.insert(new SearchNode(node.current, neighbor, newTotal, 1));
@@ -84,25 +115,51 @@ public class Solver {
         return result;
     }
 
+    /**
+     * {@code SearchNode} represents a node to be searched.
+     */
     private class SearchNode implements Comparable<SearchNode> {
-        private final WorldState previous, current;
-        private final int total, price, h;
-        private final boolean isGoal;
+        /**
+         * Previous state.
+         */
+        private final WorldState previous;
+
+        /**
+         * Current state.
+         */
+        private final WorldState current;
+
+        /**
+         * Total number of moves from the initial state to the current state.
+         */
+        private final int total;
+
+        /**
+         * Number of moves from the previous state to the current state.
+         * In almost all cases, this value is 1.
+         */
+        private final int price;
+
+        /**
+         * Cache for estimated number of moves from the current state to the
+         * goal state.
+         */
+        private final int h;
 
         /**
          * Creates a node for searching.
-         * @param previous previous node
-         * @param current current node
-         * @param total total cost from initial node to current node
-         * @param price cost from previous node to current node
+         * @param prev previous node
+         * @param curr current node
+         * @param dist total cost from initial node to current node
+         * @param weight cost from previous node to current node
          */
-        private SearchNode(WorldState previous, WorldState current, int total, int price) {
-            this.previous = previous;
-            this.current = current;
-            this.total = total;
-            this.price = price;
-            this.h = current.estimatedDistanceToGoal();
-            this.isGoal = current.isGoal();
+        private SearchNode(WorldState prev, WorldState curr,
+                           int dist, int weight) {
+            this.previous = prev;
+            this.current = curr;
+            this.total = dist;
+            this.price = weight;
+            this.h = curr.estimatedDistanceToGoal();
         }
 
         /**
